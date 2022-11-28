@@ -1,2 +1,2 @@
 # oop_s3
-Java programs
+Java lab programs
