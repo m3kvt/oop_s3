@@ -1,6 +1,3 @@
-//INCOMPLETE :)
-
-
 import java.io.*;
 import java.util.Scanner;
 public class dll{
@@ -13,7 +10,45 @@ public class dll{
 		}
 	}
 	Node head,tail=null;
-	public void addNode(int data){
+	void addF(int data){
+		Node new_node=new Node(data);
+		new_node.prev=null;
+		new_node.next=head;
+		if (head!=null){
+			head.prev=new_node;}
+		head=new_node;}
+	
+  void push_at(int newElement, int position) {     
+    Node newNode = new Node(newElement); 
+    
+    newNode.next = null;
+    newNode.prev = null;
+    if(position < 1) {
+      System.out.print("\nposition should be >= 1.");
+    } else if (position == 1) {
+      newNode.next = head;
+      head.prev = newNode;
+      head = newNode;
+    } else {
+      Node temp = new Node(newElement);
+      temp = head;
+      for(int i = 1; i < position-1; i++) {
+        if(temp != null) {
+          temp = temp.next;
+        }
+      }
+      if(temp != null) {
+        newNode.next = temp.next;
+        newNode.prev = temp;
+        temp.next = newNode;  
+        if(newNode.next != null)
+          newNode.next.prev = newNode;
+      } else {
+        System.out.print("\nThe previous node is null.");
+      }       
+    }
+  }	
+	void addEnd(int data){
 		Node new_node=new Node(data);
 		if (head==null){
 			head=tail=new_node;
@@ -28,7 +63,7 @@ public class dll{
 			
 		}
 	}
-	public void display(){
+	void display(){
 		Node current=head;
 		if(head==null){
 			System.out.println("Doubly linked linked list is empty");
@@ -41,41 +76,54 @@ public class dll{
 			}
 		}
 	}
-	public void delete(Node del){
-		if(head==del)
-			head = del.next;
-		if (del.next != null) {
-      del.next.prev = del.prev;}
-		if (del.prev != null) {
-      del.prev.next = del.next;}
-    return;  }
+	
 
 	public static void main(String a[]){
-			int ch;
+			int ch,data;
 			dll list=new dll();
-			Scanner sc=new Scanner(System.in);
-			list.addNode(3);
-			
+			Scanner sc=new Scanner(System.in);			
 			do{
-				System.out.println("1.Add node");
-				System.out.println("2.Delete node");
-				System.out.println("3.Display DLL");
-				System.out.println("0.To exit\n");
+				System.out.println("\t1.Add node at the end");
+				System.out.println("\t2.Add node at the front");
+				System.out.println("\t3.Add node at the given position");
+				System.out.println("\t4.Delete a given element ");
+				System.out.println("\t5.Display DLL");
+				System.out.println("\t0.To exit\n");
 				System.out.print("Enter your choice: ");
 				ch=sc.nextInt();
-
 				switch(ch){
 					case 1:System.out.print("Enter the data to be inserted:");
-					int data=sc.nextInt();
-					list.addNode(data);
+					data=sc.nextInt();
+					list.addEnd(data);
 					break;
-					case 2:
-					list.delete(list.head);list.delete(list.head.next);list.delete(list.head.next);
+					case 2:System.out.print("Enter the data to be inserted:");
+					data=sc.nextInt();
+					list.addF(data);
 					break;
-					case 3:list.display();
+					case 3:System.out.print("Enter the data to be inserted:");
+					int newdata=sc.nextInt();
+					System.out.print("Enter the position to be inserted:");
+					int pos=sc.nextInt();
+					list.push_at(newdata,pos);
 					break;
+					case 4:
+					System.out.println("Enter the element to be deleted:");
+					int dltele=sc.nextInt();
+					Node temp=list.head;
+					while (temp.data!=dltele){
+						temp=temp.next;
+					}		
+					if (temp.prev==null){
+						list.head=temp.next;
+					}
+					else{
+						temp.prev.next=temp.next;
+					}	
+					break;		
+					case 5:list.display();
+					break;
+					case 0:System.out.println("Exit from stack");
 					default:System.out.println("Invalid choice");break;}
 			} while(ch!=0);
 	}
 }
-
